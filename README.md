@@ -130,7 +130,7 @@ docker compose -f compose.dev.yaml exec workspace php artisan migrate
 
 5. Access the Application:
 
-Open your browser and navigate to [http://localhost](http://localhost).
+Open your browser and navigate to [http://localhost:8080](http://localhost:8080).
 
 ## Usage
 
