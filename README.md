@@ -93,8 +93,8 @@ If these commands do not return the versions, install Docker and Docker Compose 
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/rw4lll/laravel-docker-examples.git
-cd laravel-docker-examples
+git clone https://github.com/HarrowX/summer-practic-2025.git
+cd summer-practic-2025
 ```
 
 ### Setting Up the Development Environment
