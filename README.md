@@ -128,7 +128,13 @@ npm run dev
 docker compose -f compose.dev.yaml exec workspace php artisan migrate
 ```
 
-5. Access the Application:
+5. Run Seeders:
+
+```bash
+docker compose -f compose.dev.yaml exec workspace php artisan db:seed
+```
+
+6. Access the Application:
 
 Open your browser and navigate to [http://localhost:8080](http://localhost:8080).
 

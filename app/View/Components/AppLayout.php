@@ -15,13 +15,10 @@ class AppLayout extends Component
 
     public function render(): View
     {
-        dd([
-            "username" => auth()?->user(),
+        $data  = [
+            "name" => auth()?->user()?->name,
             "balance" => auth()?->user()?->wallet->balance,
-        ]);
-        return view('layouts.app', [
-            "username" => auth()?->user()?->getAuthIdentifierName(),
-            "balance" => auth()?->user()?->wallet->balance,
-            ]);
+        ];
+        return view('layouts.app', $data);
     }
 }
