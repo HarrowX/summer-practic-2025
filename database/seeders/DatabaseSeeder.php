@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-
         $user = Role::findOrCreate('user', 'web');
         $admin = Role::findOrCreate('admin', 'web');
 
