@@ -11,7 +11,10 @@
                 <livewire:promo.admin-panel />
             @else
                 <livewire:promo.user-panel />
+                <livewire:launcher-code-input />
             @endif
         </div>
     </div>
+
+
 </x-app-layout>

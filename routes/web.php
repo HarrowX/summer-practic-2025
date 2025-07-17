@@ -35,4 +35,11 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+Route::get('/test-event', function() {
+    \Log::info("Пытаюсь отправить событие");
+    event(new App\Events\UserDetailsSent('TEST123', 'John', 1000));
+    \Log::info("Событие отправлено");
+    return response()->json(['status' => 'sent']);
+});
+
 require __DIR__.'/auth.php';
