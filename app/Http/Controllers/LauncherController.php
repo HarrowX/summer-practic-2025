@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Events\UserDetailsSent;
 use Pusher\Pusher;
+use function Symfony\Component\String\s;
 
 class LauncherController extends Controller
 {
@@ -38,6 +39,9 @@ class LauncherController extends Controller
 
         $session = GameSession::where('code', $request->code)->firstOrFail();
         $user = auth()->user();
+        $session->user_id=auth()->id();
+        $session->save();
+
 
         $pusher = $this->getPusherInstance();
         $pusher->trigger(
@@ -60,20 +64,24 @@ class LauncherController extends Controller
             'cost' => 'required|integer|min:1'
         ]);
 
-        $session = GameSession::where('code', $request->code)
-            ->where('is_active', true)
-            ->firstOrFail();
+        $session = GameSession::where('code', $request->code)->firstOrFail();
+        $user = User::findOrFail($session->user_id);
 
-        $user = $session->user;
-
-        // Проверяем баланс
         if ($user->balance < $request->cost) {
-            return response()->json(['error' => 'Insufficient balance'], 400);
+            return response()->json([
+                'success' => false,
+                'error' => 'Недостаточно средств на балансе'
+            ], 400);
         }
 
         // Списание средств
-        $user->decrement('balance', $request->cost);
-        $session->increment('cost', $request->cost);
+        $transaction = $user->withdraw($request->cost, [
+            'session' => $session->code,
+            'description' => 'Game payment'
+        ]);
+
+
+
 
         return response()->json([
             'success' => true,

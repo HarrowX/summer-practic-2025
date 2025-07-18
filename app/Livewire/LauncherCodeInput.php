@@ -13,33 +13,26 @@ class LauncherCodeInput extends Component
     public $success = false;
     public $error = '';
 
-
-    private function getPusherInstance()
-    {
-        return new Pusher(
-            config('broadcasting.connections.pusher.key'),
-            config('broadcasting.connections.pusher.secret'),
-            config('broadcasting.connections.pusher.app_id'),
-            config('broadcasting.connections.pusher.options')
-        );
-    }
-
     public function submitCode()
     {
-        $this->error = ''; // Просто очищаем ошибку напрямую
+        $this->error = '';
 
         $session = GameSession::where('code', $this->code)->first();
+
+        $session->user_id = auth()->id();
+
+        $session->save();
 
         if (!$session) {
             $this->error = 'Неверный код';
             return;
         }
 
-        event(new UserDetailsSent(
+        UserDetailsSent::dispatch(
             $session->code,
             auth()->user()->name,
             auth()->user()->balance
-        ));
+        );
 
         $this->success = true;
     }
